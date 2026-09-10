@@ -1,0 +1,53 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "layout-transition",
+        "value": "*",
+        "files": [
+          "src/content.js"
+        ],
+        "createdAt": "2026-09-09T20:10:48.182Z",
+        "reason": "Claude: determinate progress-bar fill inside a fixed-height overflow-hidden track; width reveal is idiomatic and reflows no siblings, scaleX would squash the gradient"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "popup.*"
+        ],
+        "createdAt": "2026-09-09T20:56:00.245Z",
+        "reason": "Approved 'Paper & Coral' design spec: paper #f7f4ee is the defining surface (user-provided high-fidelity spec)."
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "popup.*"
+        ],
+        "createdAt": "2026-09-09T20:56:00.262Z",
+        "reason": "Approved spec mandates coral #e8654a brand accent for value/ETA text; large wpm value clears 3:1, small accent text is an intentional brand choice (user-approved high-fidelity spec)."
+      },
+      {
+        "rule": "tiny-text",
+        "value": "*",
+        "files": [
+          "popup.*"
+        ],
+        "createdAt": "2026-09-09T20:56:00.278Z",
+        "reason": "Approved spec sets 11/11.5px description and helper text as design tokens (high-fidelity)."
+      },
+      {
+        "rule": "undersized-ui-text",
+        "value": "*",
+        "files": [
+          "popup.*"
+        ],
+        "createdAt": "2026-09-09T20:56:00.292Z",
+        "reason": "Approved spec sets 10px slider scale micro-labels (Flawless/Human/Clumsy) as design tokens (high-fidelity)."
+      }
+    ]
+  }
+}

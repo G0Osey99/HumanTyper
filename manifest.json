@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "HumanTyper — Realistic Auto Typer",
+  "version": "1.2.0",
+  "description": "Type any script, paper, or snippet into any text field with realistic human timing, typos & corrections. Live ETA, progress, pause/stop, presets.",
+  "permissions": ["storage", "activeTab", "scripting", "webNavigation", "debugger"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "HumanTyper",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/engine.js", "src/sanitize.js", "src/field.js", "src/content.js"],
+      "run_at": "document_idle",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["fonts/dmsans.woff2", "fonts/jetbrainsmono.woff2"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

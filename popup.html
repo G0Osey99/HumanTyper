@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HumanTyper</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="head">
+      <div class="brand">
+        <span class="mark" aria-hidden="true"><span class="key">H</span></span>
+        <span class="word">Human<span class="coral">Typer</span></span>
+      </div>
+      <span class="ver" id="ver">v1.0</span>
+    </header>
+
+    <div class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab is-active" id="tab-script" role="tab" aria-selected="true" data-tab="script">Script</button>
+      <button class="tab" id="tab-presets" role="tab" aria-selected="false" data-tab="presets">Presets<span class="count" id="presetCount" hidden>0</span></button>
+      <button class="tab" id="tab-tune" role="tab" aria-selected="false" data-tab="tune">Tune</button>
+    </div>
+
+    <div id="notice" class="notice" hidden></div>
+
+    <!-- ===== SCRIPT ===== -->
+    <section class="panel" id="panel-script" role="tabpanel" aria-labelledby="tab-script">
+      <div class="editor">
+        <textarea id="text" spellcheck="false" placeholder="Paste the text you want typed out…"></textarea>
+        <span class="counts" id="counts">0c · 0w</span>
+      </div>
+
+      <div class="speed">
+        <div class="speed-head">
+          <span class="speed-lbl">Speed</span>
+          <span class="speed-val"><b id="wpmVal">70</b> <span class="unit">wpm</span></span>
+        </div>
+        <div class="hist">
+          <div class="bars" id="bars" aria-hidden="true"></div>
+          <input type="range" id="wpm" min="15" max="200" step="1" value="70" aria-label="Typing speed in words per minute" />
+        </div>
+        <div class="hist-ends"><span>15</span><span>200</span></div>
+      </div>
+
+      <div class="chips" id="chips">
+        <button class="chip" id="chipTypos" type="button">typos ×1.0</button>
+        <button class="chip" id="chipFatigue" type="button">fatigue</button>
+        <button class="chip" id="chipRhythm" type="button">rhythm</button>
+        <button class="chip" id="chipVariance" type="button">variance</button>
+        <button class="chip" id="chipLayout" type="button">qwerty</button>
+      </div>
+
+      <div class="go">
+        <button class="primary" id="aim" type="button">
+          <span>Aim &amp; Type</span><span class="eta" id="etaChip">~0s</span>
+        </button>
+        <div class="go-sub">
+          <span id="aimHint">types where your cursor last was</span>
+          <span class="mono" id="delayNote">start delay 0.6s</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRESETS ===== -->
+    <section class="panel" id="panel-presets" role="tabpanel" aria-labelledby="tab-presets" hidden>
+      <div class="presets" id="presetList"></div>
+      <div class="save-row">
+        <input type="text" id="presetName" placeholder="Save current script as…" />
+        <button class="save-btn" id="presetSave" type="button">Save</button>
+      </div>
+      <div class="presets-help">
+        <span>Presets keep text + speed + tuning</span>
+        <button class="del" id="presetDelete" type="button">Delete selected</button>
+      </div>
+      <button class="primary" id="loadAim" type="button" disabled>
+        <span>Load &amp; Aim</span><span class="eta" id="loadChip">—</span>
+      </button>
+    </section>
+
+    <!-- ===== TUNE ===== -->
+    <section class="panel" id="panel-tune" role="tabpanel" aria-labelledby="tab-tune" hidden>
+      <div class="tune-card">
+        <div class="trow">
+          <div class="trow-txt">
+            <div class="trow-t">Make mistakes</div>
+            <div class="trow-d">Neighbor-key typos, noticed and fixed</div>
+          </div>
+          <button class="switch" id="mistakes" role="switch" aria-checked="true" type="button"><span class="knob"></span></button>
+        </div>
+
+        <div class="trow trow-slider" id="intensityRow">
+          <div class="slider-head"><span>Typo intensity</span><b id="intVal">1.0×</b></div>
+          <input type="range" id="intensity" min="0" max="3" step="0.1" value="1" aria-label="Typo intensity" />
+          <div class="slider-scale"><span>Flawless</span><span>Human</span><span>Clumsy</span></div>
+        </div>
+
+        <div class="trow">
+          <div class="trow-txt">
+            <div class="trow-t">Fatigue over time</div>
+            <div class="trow-d">Slows down gradually on long text</div>
+          </div>
+          <button class="switch" id="fatigue" role="switch" aria-checked="true" type="button"><span class="knob"></span></button>
+        </div>
+
+        <div class="trow">
+          <div class="trow-txt">
+            <div class="trow-t">Natural rhythm</div>
+            <div class="trow-d">Word-aware bursts and pauses</div>
+          </div>
+          <button class="switch" id="rhythm" role="switch" aria-checked="true" type="button"><span class="knob"></span></button>
+        </div>
+
+        <div class="trow">
+          <div class="trow-txt">
+            <div class="trow-t">Speed variance</div>
+            <div class="trow-d">Randomize session WPM around target</div>
+          </div>
+          <button class="switch" id="variance" role="switch" aria-checked="false" type="button"><span class="knob"></span></button>
+        </div>
+      </div>
+
+      <div class="segs">
+        <div class="seg-group">
+          <span class="seg-lbl">Keyboard</span>
+          <div class="seg" id="layout" role="radiogroup" aria-label="Keyboard layout">
+            <button role="radio" data-val="qwerty" aria-checked="true" type="button">QWERTY</button>
+            <button role="radio" data-val="azerty" aria-checked="false" type="button">AZERTY</button>
+          </div>
+        </div>
+        <div class="seg-group">
+          <span class="seg-lbl">Start delay</span>
+          <div class="seg" id="startDelay" role="radiogroup" aria-label="Start delay">
+            <button role="radio" data-val="0" aria-checked="false" type="button">0</button>
+            <button role="radio" data-val="0.6" aria-checked="true" type="button">0.6s</button>
+            <button role="radio" data-val="3" aria-checked="false" type="button">3s</button>
+            <button role="radio" data-val="5" aria-checked="false" type="button">5s</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tune-foot">
+        <span>Turn all off for a steady, robotic pace</span>
+        <button class="reset" id="reset" type="button">Reset</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="src/engine.js"></script>
+  <script src="src/sanitize.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
